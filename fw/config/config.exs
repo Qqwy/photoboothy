@@ -48,12 +48,12 @@ config :ui, UiWeb.Endpoint,
 config :logger, level: :debug
 
 
-config :nerves_init_gadget,
-  ifname: "wlan0",
-  address_method: :dhcp,
-  mdns_domain: "kiosk.local",
-  node_name: "kiosk",
-  node_host: :mdns_domain
+# config :nerves_init_gadget,
+#   ifname: "wlan0",
+#   address_method: :dhcp,
+#   mdns_domain: "kiosk.local",
+#   node_name: "kiosk",
+#   node_host: :mdns_domain
 
 config :nerves_firmware_ssh,
   authorized_keys: [

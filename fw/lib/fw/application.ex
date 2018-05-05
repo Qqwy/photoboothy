@@ -5,8 +5,8 @@ defmodule Fw.Application do
   # for more information on OTP Applications
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
-    iface = Application.get_env(:nerves_network, :iface)
-    init0()
+    # iface = Application.get_env(:nerves_network, :iface)
+    # init0()
     # Define workers and child supervisors to be supervised
     children = [
       # Uncomment this if you need to wait for an IP
@@ -17,7 +17,7 @@ defmodule Fw.Application do
       #   &init1/1])
     ]
     # Comment this out if waiting for an IP
-    init1(nil)
+    # init1(nil)
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Fw.Supervisor]

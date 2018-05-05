@@ -7,7 +7,11 @@ defmodule UIWeb.Camera.Streamer do
   @behaviour Plug
   @boundary "w58EW1cEpjzydSCq"
 
-  def init(opts), do: opts
+  def init(opts) do
+    Picam.set_size(1920,1080)
+    Picam.set_fps(60)
+    opts
+  end
 
   def call(conn, _opts) do
     conn
@@ -25,8 +29,8 @@ defmodule UIWeb.Camera.Streamer do
   end
 
   defp send_picture(conn) do
-    # jpg = Picam.next_frame
-    jpg = GenServer.call(Picam.FakeCamera, :next_frame)
+    jpg = Picam.next_frame
+    # jpg = GenServer.call(Picam.FakeCamera, :next_frame)
     size = byte_size(jpg)
     header = "------#{@boundary}\r\nContent-Type: image/jpeg\r\nContent-length: #{size}\r\n\r\n"
     footer = "\r\n"
