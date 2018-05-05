@@ -22,17 +22,39 @@ config :shoehorn,
 # config :nerves_network,
 #   regulatory_domain: "NL"
 
+network_ssid = System.get_env("NERVES_NETWORK_SSID")
+network_psk = System.get_env("NERVES_NETWORK_PSK")
+
+network_iface = System.get_env("NERVES_NETWORK_IFACE") || "wlan0"
 key_mgmt = System.get_env("NERVES_NETWORK_KEY_MGMT") || "WPA-PSK"
 
-config :nerves_network, :default,
-  wlan0: [
-    ssid: System.get_env("NERVES_NETWORK_SSID"),
-    psk: System.get_env("NERVES_NETWORK_PSK"),
-    key_mgmt: String.to_atom(key_mgmt)
-  ],
-  eth0: [
-    ipv4_address_method: :dhcp
-  ]
+wlan_conf =
+if network_iface == "wlan0" do
+  config :nerves_network, :default,
+    wlan0: [ssid: network_ssid, psk: network_psk, key_mgmt: key_mgmt]
+else
+    config :nerves_network, :default,
+      eth0: [ipv4_address_method: :dhcp]
+end
+
+config :nerves_network,
+  iface: network_iface
+
+# key_mgmt = System.get_env("NERVES_NETWORK_KEY_MGMT") || "WPA-PSK"
+
+# config :nerves_network, :default,
+#   wlan0: [
+#     ssid: System.get_env("NERVES_NETWORK_SSID"),
+#     psk: System.get_env("NERVES_NETWORK_PSK"),
+#     key_mgmt: String.to_atom(key_mgmt)
+#   ],
+#   eth0: [
+#     ipv4_address_method: :dhcp
+#   ]
+
+# config :nerves_network,
+#   iface: 
+
 
 
 config :ui, UiWeb.Endpoint,

@@ -8,8 +8,8 @@ defmodule UIWeb.Camera.Streamer do
   @boundary "w58EW1cEpjzydSCq"
 
   def init(opts) do
-    Picam.set_size(1920,1080)
-    Picam.set_fps(60)
+    Picam.set_size(1280,720)
+    Picam.set_fps(30)
     opts
   end
 

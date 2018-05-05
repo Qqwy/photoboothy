@@ -5,19 +5,19 @@ defmodule Fw.Application do
   # for more information on OTP Applications
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
-    # iface = Application.get_env(:nerves_network, :iface)
-    # init0()
+    iface = Application.get_env(:nerves_network, :iface)
+    init0()
     # Define workers and child supervisors to be supervised
     children = [
       # Uncomment this if you need to wait for an IP
       # You will need this to load remote content
-      
+
       # worker(SystemRegistry.Task, [
       #   [:state, :network_interface,  iface, :ipv4_address],
       #   &init1/1])
     ]
     # Comment this out if waiting for an IP
-    # init1(nil)
+    init1(nil)
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Fw.Supervisor]
@@ -57,6 +57,7 @@ defmodule Fw.Application do
     # Uncomment if you will need to wait until the time is set if you point
     # to an ssl domain
     # init_ntp("time.nist.gov")
+    # :timer.sleep(4000)
     init_ui()
   end
 
