@@ -1,47 +1,42 @@
-<div class="jumbotron">
-    <h2><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h2>
-    <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
+<div class="photobooth_wrapper">
+    <!-- <img src="video.mjpg" id="videofeed" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: auto; z-index: -1;" /> -->
     <img src="video.mjpg" id="videofeed" />
-</div>
-
-<div class="row marketing">
-    <div class="col-lg-6">
-        <h4>Resources</h4>
-        <ul>
-            <li>
-                <a href="http://phoenixframework.org/docs/overview">Guides</a>
-            </li>
-            <li>
-                <a href="https://hexdocs.pm/phoenix">Docs</a>
-            </li>
-            <li>
-                <a href="https://github.com/phoenixframework/phoenix">Source</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="col-lg-6">
-        <h4>Help</h4>
-        <ul>
-            <li>
-                <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
-            </li>
-            <li>
-                <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
-            </li>
-            <li>
-                <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
-            </li>
-        </ul>
-    </div>
+    <!-- <canvas id="video-canvas" /> -->
+    <h1>Elixir+Nerves Photobooth</h1>
 </div>
 
 <script>
- var frame = 0;
- var camerafun = function(){
-     document.getElementById("videofeed").src = "video.mjpg?frame=" + frame;
-     ++frame;
-     window.requestAnimationFrame(camerafun);
- }
- window.requestAnimationFrame(camerafun);
+ /* var frame = 0;*/
+ /* var camerafun = function(){*/
+ /* document.getElementById("videofeed").src = "video.mjpg?frame=" + frame;*/
+ /* ++frame;*/
+ /* window.requestAnimationFrame(camerafun);*/
+ /* }*/
+ /* window.requestAnimationFrame(camerafun);*/
+ /* (function(){*/
+ /* var canvas=document.getElementById("video-canvas");*/
+ /* var ctx=canvas.getContext("2d");*/
+ /* canvas.width=1280;*/
+ /* canvas.height=720;*/
+ /* var frame = 0;*/
+ /* */
+ /* var load_next_image = function(){*/
+ /* img=new Image();*/
+ /* img.onload=function(){*/
+ /* ctx.drawImage(img,0,0,img.width,img.height,0,0,canvas.width,canvas.height);*/
+ /* load_next_image();*/
+ /* }*/
+        /* img.src="http://www.onestopwebmasters.com/wp-content/uploads/2011/06/eitai-bridge.jpg";*/
+ /* img.src="./video.mjpg?frame=" + frame;*/
+ /* ++frame;*/
+ /* }*/
+ /* load_next_image();*/
+ /* })();*/
+
+var TIMEOUT = 33;
+var imgelem = document.getElementById("videofeed");
+var refreshInterval = setInterval(function() {
+  var random = Math.floor(Math.random() * Math.pow(2, 31));
+  imgelem.src="video.mjpg?frame=" + random;
+}, TIMEOUT);
 </script>
