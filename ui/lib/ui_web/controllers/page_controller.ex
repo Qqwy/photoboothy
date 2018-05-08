@@ -28,7 +28,9 @@ defmodule UiWeb.PageController do
     camera = Application.get_env(:picam, :camera)
     jpg = GenServer.call(camera, :next_frame)
     IO.puts("JPG: #{inspect(jpg)}")
-    File.write!("./photobooth-#{NaiveDateTime.utc_now()}.jpg", jpg)
+    photo_folder = Application.get_env(:photobooth_ui, :photos_folder, "./")
+    photo_path = Path.join(photo_folder, "photobooth-#{NaiveDateTime.utc_now()}.jpg")
+    File.write!(photo_path, jpg)
 
     conn
     |> put_resp_header("Age", "0")
