@@ -2,14 +2,15 @@ defmodule UiWeb.PageController do
   use UiWeb, :controller
 
   def index(conn, _params) do
+    # Picam.set_size(1920,1080)
     render conn, "index.html"
   end
 
   def video(conn, _params) do
-    # Picam.set_size(1920,1080)
+    Picam.set_size(640,480)
     # Picam.set_vflip(true)
     camera = Application.get_env(:picam, :camera)
-    jpg = GenServer.call(camera, :next_frame)
+    jpg = next_frame()
     # jpg = Picam.next_frame()
 
     conn
@@ -22,18 +23,28 @@ defmodule UiWeb.PageController do
 
 
   def take_picture(conn, _params) do
-    # Picam.set_size(1920,1080)
-    camera = Application.get_env(:picam, :camera)
-    jpg = GenServer.call(camera, :next_frame)
+    small_jpg = next_frame()
+    Picam.set_size(1920,1080)
+    :timer.sleep(500)
+    jpg = next_frame()
     IO.puts("JPG: #{inspect(jpg)}")
-    photo_folder = Application.get_env(:photobooth_ui, :photos_folder, "/root")
-    photo_path = Path.join(photo_folder, "photobooth-#{NaiveDateTime.utc_now()}.jpg")
-    File.write!(photo_path, jpg)
+    Task.start(fn ->
+      photo_folder = Application.get_env(:ui, :photos_folder, "/root")
+      photo_path = Path.join(photo_folder, "photobooth-#{NaiveDateTime.utc_now()}.jpg")
+      small_photo_path = Path.join(photo_folder, "photobooth-#{NaiveDateTime.utc_now()}-small.jpg")
+      File.write!(photo_path, jpg)
+      File.write!(small_photo_path, small_jpg)
+    end)
 
     conn
     |> put_resp_header("Age", "0")
     |> put_resp_header("Cache-Control", "no-cache, private")
     |> put_resp_header("Pragma", "no-cache")
     |> send_resp(200, jpg)
+  end
+
+  defp next_frame() do
+    camera = Application.get_env(:picam, :camera)
+    GenServer.call(camera, :next_frame)
   end
 end

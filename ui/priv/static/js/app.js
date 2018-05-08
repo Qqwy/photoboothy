@@ -6,6 +6,7 @@ var canvas;
 var ctx;
 
 var photo;
+var photo_returned = false;
 var photos = [];
 function takePicture(){
     console.log("Click!");
@@ -28,12 +29,15 @@ function takePicture(){
     photo = new Image();
     photo.src = "./take_picture?frame=" + (Math.random() * Math.pow(2, 31));
     photo.addEventListener('load', function(){
+        photo_returned = true;
         console.log("Picture taken!");
         photos.push(photo);
+        drawPhoto();
 
         window.setTimeout(function(){
             photo = undefined;
-        }, 3000);
+            photo_returned = false;
+        }, 5000);
     });
 }
 
@@ -76,9 +80,19 @@ function drawCountdown(){
 
 function drawPhoto(){
     try{
-    ctx.drawImage(photo, 0, 0, photo.width, photo.height, 0, 0, photo.width / canvas.width, photo.height / canvas.height);
+        // if(photo_returned){
+            console.log("PHOTO: ", photo);
+            ctx.drawImage(photo, 0, 0, photo.width, photo.height, 0, 0, photo.width / canvas.width, photo.height / canvas.height);
+        // }
+
+        ctx.save();
+        ctx.font = "105pt sans-serif";
+        ctx.globalAlpha = 0.5;
+        ctx.globalCompositeOperation = "lighten";
+        ctx.fillText("CLICK", canvas.width/2, canvas.height/2);
+        ctx.restore();
     } catch(err){
-        console.log("Encountered error while drawing photo:", err);
+        console.log("Encountered error while drawing photo:", err, photo);
     }
 }
 
@@ -86,12 +100,17 @@ function drawCurrentFrame(img){
     try{
         ctx.drawImage(img, 0, 0);
     } catch(err){
-        console.log("Encountered error while drawing img:", err);
+        console.log("Encountered error while drawing img:", err, img);
     }
 }
 
 function draw(img){
-    drawCurrentFrame(img);
+    // if(photo !== undefined){
+    //     drawPhoto();
+    // }else{
+        drawCurrentFrame(img);
+    // }
+
 
     drawHeader();
 
@@ -99,9 +118,9 @@ function draw(img){
         drawCountdown();
     }
 
-    if(photo !== undefined){
-        drawPhoto();
-    }
+    // if(photo !== undefined){
+    //     drawPhoto();
+    // }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -113,23 +132,17 @@ document.addEventListener("DOMContentLoaded", function() {
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
 
-    var TIMEOUT = 100;
+    var TIMEOUT = 200;
     var imgelem = document.getElementById("videofeed");
     var refreshInterval = setInterval(function() {
-        var random = Math.floor(Math.random() * Math.pow(2, 31));
-        var img = new Image();
-        img.src="video_call?frame=" + random;
-        img.addEventListener('load', function(){draw(img);});
-        // img.onload = function(){
-        //     ctx.drawImage(img, 0, 0);
-        //     ctx.font = "25pt Verdana";
-        //     ctx.fillText("Foobar", 50, 50);
-
-        //     if(countdown_interval){
-        //         ctx.font = "45pt Verdana";
-        //         ctx.fillText(countdown_value, canvas.width/2, canvas.height/2);
-        //     }
-        // };
+        if(photo === undefined){
+            var random = Math.floor(Math.random() * Math.pow(2, 31));
+            var img = new Image();
+            img.src="video_call?frame=" + random;
+            img.addEventListener('load', function(){draw(img);});
+        // }else{
+        //     draw(img);
+        }
     }, TIMEOUT);
 
     canvas.addEventListener("click", countDown);
