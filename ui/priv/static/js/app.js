@@ -11,23 +11,9 @@ var photos = [];
 function takePicture(){
     console.log("Click!");
 
-    // var httpRequest = new XMLHttpRequest();
-    // httpRequest.onreadystatechange = function(){
-    //     if (httpRequest.readyState === XMLHttpRequest.DONE) {
-    //         if (httpRequest.status === 200) {
-    //             // var response = JSON.parse(httpRequest.responseText);
-    //             var response = httpRequest.responseText;
-    //             alert(response);
-    //         } else {
-    //             alert('There was a problem with the request.');
-    //         }
-    //     }
-    // };
-    // httpRequest.open('GET', 'take_picture', true);
-    // httpRequest.send();
-
     photo = new Image();
     photo.src = "./take_picture?frame=" + (Math.random() * Math.pow(2, 31));
+    drawWhiteScreen();
     photo.addEventListener('load', function(){
         photo_returned = true;
         console.log("Picture taken!");
@@ -75,6 +61,13 @@ function drawCountdown(){
     ctx.globalAlpha = 0.5;
     ctx.globalCompositeOperation = "lighten";
     ctx.fillText(countdown_value, canvas.width/2, canvas.height/2);
+    ctx.restore();
+}
+
+function drawWhiteScreen(){
+    ctx.save();
+    ctx.fillStyle="white";
+    ctx.fillRect(0,0, canvas.width, canvas.height);
     ctx.restore();
 }
 
