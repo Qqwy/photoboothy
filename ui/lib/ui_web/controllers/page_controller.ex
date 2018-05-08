@@ -6,8 +6,7 @@ defmodule UiWeb.PageController do
   end
 
   def video(conn, _params) do
-    Picam.set_size(1280,720)
-    Picam.set_fps(30)
+    # Picam.set_size(1920,1080)
     # Picam.set_vflip(true)
     camera = Application.get_env(:picam, :camera)
     jpg = GenServer.call(camera, :next_frame)
@@ -23,8 +22,7 @@ defmodule UiWeb.PageController do
 
 
   def take_picture(conn, _params) do
-    Picam.set_size(1920,1080)
-    Picam.set_fps(30)
+    # Picam.set_size(1920,1080)
     camera = Application.get_env(:picam, :camera)
     jpg = GenServer.call(camera, :next_frame)
     IO.puts("JPG: #{inspect(jpg)}")

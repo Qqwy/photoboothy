@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function() {
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
 
-    var TIMEOUT = 200;
+    var TIMEOUT = 100;
     var imgelem = document.getElementById("videofeed");
     var refreshInterval = setInterval(function() {
         var random = Math.floor(Math.random() * Math.pow(2, 31));
