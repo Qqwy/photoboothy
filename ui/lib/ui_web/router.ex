@@ -9,15 +9,17 @@ defmodule UiWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  forward "/video.mjpg", UIWeb.Camera.Streamer
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  forward "/video.mjpg", UIWeb.Camera.Streamer
 
   scope "/", UiWeb do
     pipe_through :browser # Use the default browser stack
 
+    get "/video_call", PageController, :video
     get "/", PageController, :index
   end
 

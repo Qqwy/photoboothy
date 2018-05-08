@@ -1,11 +1,15 @@
 defmodule Ui.Mixfile do
   use Mix.Project
 
+
+  @target System.get_env("MIX_TARGET") || "host"
+
   def project do
     [
       app: :ui,
       version: "0.0.1",
       elixir: "~> 1.4",
+      target: @target,
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,

@@ -23,7 +23,7 @@ defmodule Ui.Application do
   end
 
   def camera_worker do
-    Application.get_env(:picam, :camera, Picam.Camera)
+    Application.get_env(:picam, :camera, Picam.FakeCamera)
   end
 
   # Tell Phoenix to update the endpoint configuration

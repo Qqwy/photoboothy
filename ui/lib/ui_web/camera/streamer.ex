@@ -10,6 +10,7 @@ defmodule UIWeb.Camera.Streamer do
   def init(opts) do
     Picam.set_size(1280,720)
     Picam.set_fps(30)
+    # Picam.set_vflip(true)
     opts
   end
 
@@ -29,8 +30,9 @@ defmodule UIWeb.Camera.Streamer do
   end
 
   defp send_picture(conn) do
-    jpg = Picam.next_frame
-    # jpg = GenServer.call(Picam.FakeCamera, :next_frame)
+    # jpg = Picam.next_frame
+    camera = Application.get_env(:picam, :camera)
+    jpg = GenServer.call(camera, :next_frame)
     size = byte_size(jpg)
     header = "------#{@boundary}\r\nContent-Type: image/jpeg\r\nContent-length: #{size}\r\n\r\n"
     footer = "\r\n"

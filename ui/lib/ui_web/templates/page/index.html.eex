@@ -1,6 +1,6 @@
 <div class="photobooth_wrapper">
-    <!-- <img src="video.mjpg" id="videofeed" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: auto; z-index: -1;" /> -->
-    <img src="video.mjpg" id="videofeed" />
+    <img src="video.mjpg" id="videofeed" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: auto; z-index: -1; image-rendering: optimizeSpeed;" />
+    <!-- <img src="video.mjpg" id="videofeed" /> -->
     <!-- <canvas id="video-canvas" /> -->
     <h1>Elixir+Nerves Photobooth</h1>
 </div>
@@ -33,10 +33,10 @@
  /* load_next_image();*/
  /* })();*/
 
-var TIMEOUT = 33;
+var TIMEOUT = 50;
 var imgelem = document.getElementById("videofeed");
 var refreshInterval = setInterval(function() {
   var random = Math.floor(Math.random() * Math.pow(2, 31));
-  imgelem.src="video.mjpg?frame=" + random;
+  imgelem.src="video_call?frame=" + random;
 }, TIMEOUT);
 </script>
