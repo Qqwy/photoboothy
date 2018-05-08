@@ -28,7 +28,7 @@ defmodule UiWeb.PageController do
     camera = Application.get_env(:picam, :camera)
     jpg = GenServer.call(camera, :next_frame)
     IO.puts("JPG: #{inspect(jpg)}")
-    photo_folder = Application.get_env(:photobooth_ui, :photos_folder, "./")
+    photo_folder = Application.get_env(:photobooth_ui, :photos_folder, "/root")
     photo_path = Path.join(photo_folder, "photobooth-#{NaiveDateTime.utc_now()}.jpg")
     File.write!(photo_path, jpg)
 
