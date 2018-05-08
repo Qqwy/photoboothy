@@ -75,11 +75,19 @@ function drawCountdown(){
 }
 
 function drawPhoto(){
+    try{
     ctx.drawImage(photo, 0, 0, photo.width, photo.height, 0, 0, photo.width / canvas.width, photo.height / canvas.height);
+    } catch(err){
+        console.log("Encountered error while drawing photo:", err);
+    }
 }
 
 function drawCurrentFrame(img){
-    ctx.drawImage(img, 0, 0);
+    try{
+        ctx.drawImage(img, 0, 0);
+    } catch(err){
+        console.log("Encountered error while drawing img:", err);
+    }
 }
 
 function draw(img){
