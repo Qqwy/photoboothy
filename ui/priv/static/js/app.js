@@ -37,7 +37,7 @@ function takePicture(){
         window.setTimeout(function(){
             photo = undefined;
             photo_returned = false;
-        }, 5000);
+        }, 3000);
     });
 }
 

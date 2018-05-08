@@ -7,7 +7,7 @@ defmodule UiWeb.PageController do
   end
 
   def video(conn, _params) do
-    Picam.set_size(640,480)
+    Picam.set_size(1280,720)
     # Picam.set_vflip(true)
     camera = Application.get_env(:picam, :camera)
     jpg = next_frame()
@@ -23,17 +23,18 @@ defmodule UiWeb.PageController do
 
 
   def take_picture(conn, _params) do
-    small_jpg = next_frame()
-    Picam.set_size(1920,1080)
-    :timer.sleep(500)
+    # small_jpg = next_frame()
+    # Picam.set_size(1920,1080)
+    # :timer.sleep(500)
     jpg = next_frame()
     IO.puts("JPG: #{inspect(jpg)}")
     Task.start(fn ->
       photo_folder = Application.get_env(:ui, :photos_folder, "/root")
       photo_path = Path.join(photo_folder, "photobooth-#{NaiveDateTime.utc_now()}.jpg")
-      small_photo_path = Path.join(photo_folder, "photobooth-#{NaiveDateTime.utc_now()}-small.jpg")
+      # small_photo_path = Path.join(photo_folder, "photobooth-#{NaiveDateTime.utc_now()}-small.jpg")
       File.write!(photo_path, jpg)
-      File.write!(small_photo_path, small_jpg)
+      IO.puts("Done writing JPG #{photo_path}: #{inspect(jpg)}")
+      # File.write!(small_photo_path, small_jpg)
     end)
 
     conn
