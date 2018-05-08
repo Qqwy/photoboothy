@@ -74,16 +74,25 @@ function drawCountdown(){
     ctx.restore();
 }
 
-function draw(img){
+function drawPhoto(){
+    ctx.drawImage(photo, 0, 0, photo.width, photo.height, 0, 0, photo.width / canvas.width, photo.height / canvas.height);
+}
+
+function drawCurrentFrame(img){
     ctx.drawImage(img, 0, 0);
-    if(photo){
-        ctx.drawImage(photo, 0, 0, img.width, img.height, 0, 0, img.width / canvas.width, img.height / canvas.height);
-    }
+}
+
+function draw(img){
+    drawCurrentFrame(img);
 
     drawHeader();
 
     if(countdown_interval){
         drawCountdown();
+    }
+
+    if(photo !== undefined){
+        drawPhoto();
     }
 }
 
