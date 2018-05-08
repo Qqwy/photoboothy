@@ -20,6 +20,7 @@ defmodule UiWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/video_call", PageController, :video
+    get "/take_picture", PageController, :take_picture
     get "/", PageController, :index
   end
 

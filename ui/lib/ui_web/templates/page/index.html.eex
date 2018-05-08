@@ -1,42 +1,6 @@
 <div class="photobooth_wrapper">
-    <img src="video.mjpg" id="videofeed" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: auto; z-index: -1; image-rendering: optimizeSpeed;" />
+    <!-- <img src="video.mjpg" id="videofeed" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: auto; z-index: -1; image-rendering: optimizeSpeed;" /> -->
     <!-- <img src="video.mjpg" id="videofeed" /> -->
-    <!-- <canvas id="video-canvas" /> -->
-    <h1>Elixir+Nerves Photobooth</h1>
+    <canvas id="video-canvas" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: auto; image-rendering: optimizeSpeed;" width="800" height="600" />
+    <!-- <h1>Elixir+Nerves Photobooth</h1> -->
 </div>
-
-<script>
- /* var frame = 0;*/
- /* var camerafun = function(){*/
- /* document.getElementById("videofeed").src = "video.mjpg?frame=" + frame;*/
- /* ++frame;*/
- /* window.requestAnimationFrame(camerafun);*/
- /* }*/
- /* window.requestAnimationFrame(camerafun);*/
- /* (function(){*/
- /* var canvas=document.getElementById("video-canvas");*/
- /* var ctx=canvas.getContext("2d");*/
- /* canvas.width=1280;*/
- /* canvas.height=720;*/
- /* var frame = 0;*/
- /* */
- /* var load_next_image = function(){*/
- /* img=new Image();*/
- /* img.onload=function(){*/
- /* ctx.drawImage(img,0,0,img.width,img.height,0,0,canvas.width,canvas.height);*/
- /* load_next_image();*/
- /* }*/
-        /* img.src="http://www.onestopwebmasters.com/wp-content/uploads/2011/06/eitai-bridge.jpg";*/
- /* img.src="./video.mjpg?frame=" + frame;*/
- /* ++frame;*/
- /* }*/
- /* load_next_image();*/
- /* })();*/
-
-var TIMEOUT = 50;
-var imgelem = document.getElementById("videofeed");
-var refreshInterval = setInterval(function() {
-  var random = Math.floor(Math.random() * Math.pow(2, 31));
-  imgelem.src="video_call?frame=" + random;
-}, TIMEOUT);
-</script>
