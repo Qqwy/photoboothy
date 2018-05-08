@@ -22,7 +22,8 @@ defmodule UiWeb.Router do
 
     get "/video_call", PageController, :video
     get "/take_picture", PageController, :take_picture
-    get "/", PageController, :index
+    # get "/", PageController, :index
+    get "/", PageController, :gum
   end
 
 

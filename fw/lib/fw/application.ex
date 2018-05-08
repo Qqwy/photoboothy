@@ -12,12 +12,12 @@ defmodule Fw.Application do
       # Uncomment this if you need to wait for an IP
       # You will need this to load remote content
 
-      # worker(SystemRegistry.Task, [
-      #   [:state, :network_interface,  iface, :ipv4_address],
-      #   &init1/1])
+      worker(SystemRegistry.Task, [
+        [:state, :network_interface,  iface, :ipv4_address],
+        &init1/1])
     ]
     # Comment this out if waiting for an IP
-    init1(nil)
+    # init1(nil)
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Fw.Supervisor]
@@ -62,9 +62,9 @@ defmodule Fw.Application do
   end
 
   def init_ui() do
-    System.put_env("QTWEBENGINE_REMOTE_DEBUGGING", "9222")
-    System.put_env("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-embedded-switches")
-    System.cmd("qt-webengine-kiosk", ["-c", "/etc/qt-webengine-kiosk.ini", "--opengl", "NATIVE"])
+    System.put_env("QTWEBENGINE_REMOTE_DEBUGGING", "http://0.0.0.0:9222")
+    System.put_env("QTWEBENGINE_CHROMIUM_FLAGS", "--unsafely-treat-insecure-origin-as-secure=http://0.0.0.0:80,http://0.0.0.0:4000 --disable-embedded-switches")
+    System.cmd("qt-webengine-kiosk", ["-c", "/etc/qt-webengine-kiosk.ini", "--opengl", "NATIVE", ])
   end
 
   def init_ntp(ntp_server) do
@@ -78,6 +78,6 @@ defmodule Fw.Application do
   end
 
   def start_remote_debugger() do
-    System.cmd("socat", ["tcp-listen:9223,fork", "tcp:localhost:9222"])
+    System.cmd("socat", ["tcp-listen:9223,fork", "tcp:0.0.0.0:9222"])
   end
 end

@@ -1,0 +1,36 @@
+<div class="container fluid">
+  <div class="row">
+
+    <div id='video-space' class="span6">
+
+			<canvas id="acanvas"></canvas>
+      <video autoplay class="span5" ></video>
+    </div>
+  </div>
+
+</div>
+
+ 
+<script>
+ // getUserMedia
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+      var constraints = {audio: false, video: true};
+      var video = document.querySelector("video");
+ 
+      function successCallback(stream) {
+        // stream available to console so you could inspect it and see what this object looks like
+        window.stream = stream;
+        if (window.URL) {
+          video.src = window.URL.createObjectURL(stream);
+        } else {
+          video.src = stream;
+        }
+        video.play();
+      }
+ 
+      function errorCallback(error) {
+        console.log("navigator.getUserMedia error: ", error);
+      }
+ 
+      navigator.getUserMedia(constraints, successCallback, errorCallback);
+</script>

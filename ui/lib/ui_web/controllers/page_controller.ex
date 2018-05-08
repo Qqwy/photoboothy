@@ -6,6 +6,10 @@ defmodule UiWeb.PageController do
     render conn, "index.html"
   end
 
+  def gum(conn, _params) do
+    render conn, "gum.html"
+  end
+
   def video(conn, _params) do
     Picam.set_size(1280,720)
     # Picam.set_vflip(true)
