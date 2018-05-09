@@ -3,7 +3,7 @@
 // * https://raw.githubusercontent.com/phoenixframework/phoenix_html/v2.10.0/priv/static/phoenix_html.js
 
 function performAfter(timeout, fun){
-    window.setInterval(fun, timeout);
+    window.setTimeout(fun, timeout);
 }
 
 var canvas;
@@ -11,6 +11,8 @@ var ctx;
 
 var photo;
 var photo_returned = false;
+var pictures_taken = 0;
+var pictures_taken_total = 0;
 var photos = [];
 var PHOTOS_PER_CLICK=4;
 function takePicture(){
@@ -23,16 +25,19 @@ function takePicture(){
         photo_returned = true;
         console.log("Picture taken!");
         photos.push(photo);
+        ++pictures_taken;
+        ++pictures_taken_total;
         drawPhoto();
 
         performAfter(3000, function(){
             photo = undefined;
             photo_returned = false;
 
-            if(photos.length < PHOTOS_PER_CLICK){
+            if(pictures_taken < PHOTOS_PER_CLICK){
                 countDown();
             }else{
                 photos = [];
+                pictures_taken = 0;
             }
         });
     });
@@ -48,24 +53,29 @@ function takePictures(){
     });
 }
 
-var countdown_value;
+var countdown_value = 0;
 var countdown_interval;
 function countDown(){
     // early return if already in the process of doing this.
-    if(countdown_interval || photo){
-        return;
-    }
     countdown_value = 3;
     drawCountdown();
-    countdown_interval = window.setInterval(function(){
-        --countdown_value;
-        if(countdown_value == 0){
-            window.clearInterval(countdown_interval);
-            countdown_interval = undefined;
-            takePicture();
-            return;
-        }
-    }, 1000);
+    for(var index = 1; index <= 3; ++index)
+    {
+        performAfter(index * 1000, function(){
+            --countdown_value;
+        });
+        // performAfter((3 - countdown_value) * 1000, drawCountdown);
+    }
+    performAfter(4 * 1000, takePicture);
+    // countdown_interval = window.setInterval(function(){
+    //     --countdown_value;
+    //     if(countdown_value == 0){
+    //         window.clearInterval(countdown_interval);
+    //         countdown_interval = undefined;
+    //         takePicture();
+    //         return;
+    //     }
+    // }, 1000);
 }
 
 function drawHeader(){
@@ -73,13 +83,15 @@ function drawHeader(){
     ctx.globalAlpha = 0.5;
     ctx.globalCompositeOperation = "lighten";
     ctx.fillText("Nauticon Photobooth", canvas.width/2, 50);
+    ctx.font = "15pt sans-serif";
+    ctx.fillText("Foto's: " + pictures_taken_total, 7 * canvas.width / 8, 50);
     ctx.restore();
 }
 
 function drawCountdown(){
     ctx.save();
     ctx.font = "105pt sans-serif";
-    ctx.globalAlpha = 0.5;
+    ctx.globalAlpha = 0.8;
     ctx.globalCompositeOperation = "lighten";
     ctx.fillText(countdown_value, canvas.width/2, canvas.height/2);
     ctx.restore();
@@ -129,7 +141,7 @@ function draw(img){
 
     drawHeader();
 
-    if(countdown_interval){
+    if(countdown_value != 0){
         drawCountdown();
     }
 
@@ -160,5 +172,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }, TIMEOUT);
 
-    canvas.addEventListener("click", countDown);
+    canvas.addEventListener("click", function(){
+        if(countdown_interval || photo){
+            return;
+        }
+        countDown();
+    });
 });
