@@ -8,6 +8,7 @@ defmodule UiWeb.PageController do
 
   def video(conn, _params) do
     Picam.set_size(1280,720)
+    Picam.set_hflip(true)
     # Picam.set_vflip(true)
     camera = Application.get_env(:picam, :camera)
     jpg = next_frame()

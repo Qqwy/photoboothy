@@ -2,12 +2,17 @@
 // copy the following scripts into your javascript bundle:
 // * https://raw.githubusercontent.com/phoenixframework/phoenix_html/v2.10.0/priv/static/phoenix_html.js
 
+function performAfter(timeout, fun){
+    window.setInterval(fun, timeout);
+}
+
 var canvas;
 var ctx;
 
 var photo;
 var photo_returned = false;
 var photos = [];
+var PHOTOS_PER_CLICK=4;
 function takePicture(){
     console.log("Click!");
 
@@ -20,10 +25,26 @@ function takePicture(){
         photos.push(photo);
         drawPhoto();
 
-        window.setTimeout(function(){
+        performAfter(3000, function(){
             photo = undefined;
             photo_returned = false;
-        }, 3000);
+
+            if(photos.length < PHOTOS_PER_CLICK){
+                countDown();
+            }else{
+                photos = [];
+            }
+        });
+    });
+}
+
+function takePictures(){
+    // TODO, buggy.
+    for(var index = 0; index < PHOTOS_PER_CLICK; ++index){
+        performAfter(index * 6000, countDown);
+    }
+    performAfter(PHOTOS_PER_CLICK * 6000, function(){
+        photos = [];
     });
 }
 
@@ -75,14 +96,15 @@ function drawPhoto(){
     try{
         // if(photo_returned){
             console.log("PHOTO: ", photo);
-            ctx.drawImage(photo, 0, 0, photo.width, photo.height, 0, 0, photo.width / canvas.width, photo.height / canvas.height);
+            // ctx.drawImage(photo, 0, 0, photo.width, photo.height, 0, 0, photo.width / canvas.width, photo.height / canvas.height);
+        ctx.drawImage(photo, 0, 0);
         // }
 
         ctx.save();
         ctx.font = "105pt sans-serif";
         ctx.globalAlpha = 0.5;
         ctx.globalCompositeOperation = "lighten";
-        ctx.fillText("CLICK", canvas.width/2, canvas.height/2);
+        ctx.fillText("CLICK " + photos.length + '/4', canvas.width/2, canvas.height/2);
         ctx.restore();
     } catch(err){
         console.log("Encountered error while drawing photo:", err, photo);
@@ -127,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var TIMEOUT = 200;
     var imgelem = document.getElementById("videofeed");
-    var refreshInterval = setInterval(function() {
+    var refreshInterval = window.setInterval(function() {
         if(photo === undefined){
             var random = Math.floor(Math.random() * Math.pow(2, 31));
             var img = new Image();

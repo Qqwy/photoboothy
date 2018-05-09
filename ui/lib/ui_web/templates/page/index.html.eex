@@ -1,6 +1,6 @@
 <div class="photobooth_wrapper">
     <!-- <img src="video.mjpg" id="videofeed" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: auto; z-index: -1; image-rendering: optimizeSpeed;" /> -->
     <!-- <img src="video.mjpg" id="videofeed" /> -->
-    <canvas id="video-canvas" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: auto; image-rendering: optimizeSpeed;" width="640" height="480" />
+    <canvas id="video-canvas" style="position: fixed; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; margin: 0 auto; image-rendering: optimizeSpeed;" width="1280" height="720" />
     <!-- <h1>Elixir+Nerves Photobooth</h1> -->
 </div>
